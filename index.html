@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <script src="https://unpkg.com/react/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <div id="container"></div>
+
+    <script type="text/babel">
+        const Video = (props) => {
+            var style = props.transformed && {transform: "translateX(2px) translateY(3px) rotate(10deg) scale(0.8)"} || {}
+            return (
+                <video autoPlay loop muted style={style}>
+                    <source src={`${props.name}.${props.ext}`} type={`video/${props.ext}`} />
+                </video>
+            )
+        }
+
+        const FormatSelector = (props) => {
+            const handleChange = (event) => {
+                props.onChange(event.target.value)
+            }
+
+            return (
+                <select onChange={handleChange} value={props.value}>
+                    <option value="webm">WebM</option>
+                    <option value="mp4">mp4</option>
+                </select>
+            )
+        }
+
+        const CountSelector = (props) => {
+            const handleChange = (event) => {
+                props.onChange(event.target.value)
+            }
+
+            let options = []
+            for (let i = 1; i <= 20; i++) {
+                options.push(<option value={i} key={i}>{i}</option>)
+            }
+            return (
+                <select onChange={handleChange} value={props.value}>
+                    {options}
+                </select>
+            )
+        }
+
+        const TransformSelector = (props) => {
+            const handleChange = (event) => {
+                props.onChange(event.target.checked)
+            }
+
+            return (
+                <input type='checkbox' onChange={handleChange} value={props.value} />
+            )
+        }
+
+        const App = () => {
+            const [format, setFormat] = React.useState('webm')
+            const [count, setCount] = React.useState(5)
+            const [transformed, setTransformed] = React.useState(false)
+
+            let vids = []
+            for (let i = 0; i < count; i++) {
+                vids.push(<Video name={'400w-jO_wMuQsu5g'} ext={format} key={i} transformed={transformed} />)
+            }
+            return (
+                <>
+                    Video format:
+                    <FormatSelector onChange={setFormat} value={format} />
+                    <br />
+                    Video count:
+                    <CountSelector onChange={setCount} value={count} />
+                    <br />
+                    Transformed:
+                    <TransformSelector onChange={setTransformed} value={transformed} />
+                    <br /><br /><br />
+                    {vids}
+                </>
+            )
+        }
+
+        ReactDOM.render(
+            <App />,
+            document.getElementById('container')
+        );
+    </script>
+
+    <!-- <video width="400" controls>
+        <source src="mov_bbb.mp4" type="video/mp4">
+        <source src="mov_bbb.ogg" type="video/ogg">
+        Your browser does not support HTML video.
+    </video>
+
+    <video autoplay loop>
+        <source src="https://dl8.webmfiles.org/big-buck-bunny_trailer.webm" type="video/webm">
+    </video>
+
+    <p>
+        Video courtesy of
+        <a href="https://www.bigbuckbunny.org/" target="_blank">Big Buck Bunny</a>.
+    </p> -->
+
+</body>
+
+</html>
