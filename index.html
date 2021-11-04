@@ -7,11 +7,19 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script type="text/babel">
-        const Video = (props) => {
-            var style = props.transformed && { transform: "translateX(2px) translateY(3px) rotate(10deg) scale(0.8)" } || {}
+
+        const Mp4Video = ({ name }) => {
             return (
-                <video autoPlay loop muted style={style}>
-                    <source src={`${props.name}.${props.ext}`} type={`video/${props.ext}`} />
+                <video autoPlay loop muted>
+                    <source src={`${name}.mp4`} type={'video/mp4'} />
+                </video>
+            )
+        }
+
+        const WebMVideo = ({ name }) => {
+            return (
+                <video autoPlay loop muted>
+                    <source src={`${name}.webm`} type={'video/webm'} />
                 </video>
             )
         }
@@ -35,7 +43,7 @@
             }
 
             let options = []
-            for (let i = 1; i <= 20; i++) {
+            for (let i = 1; i <= 22; i++) {
                 options.push(<option value={i} key={i}>{i}</option>)
             }
             return (
@@ -60,9 +68,16 @@
             const [count, setCount] = React.useState(5)
             const [transformed, setTransformed] = React.useState(false)
 
+            var style = transformed && { transform: "translateX(2px) translateY(3px) rotate(10deg) scale(0.8)" } || {}
+
+            const Video = format === 'mp4' ? Mp4Video : WebMVideo
             let vids = []
-            for (let i = 0; i < count; i++) {
-                vids.push(<Video name={'400w-jO_wMuQsu5g'} ext={format} key={i} transformed={transformed} />)
+            for (let i = 1; i <= count; i++) {
+                vids.push(
+                    <div style={{ display: 'inline-block', ...style }}>
+                        <Video name={i} key={i} />
+                    </div>
+                )
             }
             return (
                 <>
